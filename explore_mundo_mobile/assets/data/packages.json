@@ -1,0 +1,112 @@
+[
+  {
+    "regiaoRelacionada": "Rio de Janeiro",
+    "destino": "Cristo Redentor",
+    "mediaAvaliacao": "9.5",
+    "totalAvaliacao": "152",
+    "preco": "180,00",
+    "titulo": "Cristo Redentor",
+    "subtitulo": "Rio de Janeiro, RJ",
+    "descricao": "Uma das sete maravilhas do mundo moderno, o Cristo Redentor oferece uma vista deslumbrante da cidade maravilhosa.",
+    "imagem": "https://aosviajantes.com.br/wp-content/uploads/2016/12/o-novo-cristo-redentor.jpg"
+  },
+  {
+    "regiaoRelacionada": "São Paulo",
+    "destino": "Avenida Paulista",
+    "mediaAvaliacao": "8.7",
+    "totalAvaliacao": "210",
+    "preco": "220,00",
+    "titulo": "Avenida Paulista",
+    "subtitulo": "São Paulo, SP",
+    "descricao": "O coração financeiro e cultural de São Paulo, repleto de museus, shoppings e opções gastronômicas para todos os gostos.",
+    "imagem": "https://img.freepik.com/fotos-premium/vista-aerea-avenida-paulista-avenida-paulista-cidade-sao-paulo-brasil_253362-137.jpg"
+  },
+  {
+    "regiaoRelacionada": "Bahia",
+    "destino": "Pelourinho",
+    "mediaAvaliacao": "9.2",
+    "totalAvaliacao": "97",
+    "preco": "420,00",
+    "titulo": "Pelourinho",
+    "subtitulo": "Salvador, BA",
+    "descricao": "O centro histórico de Salvador encanta com suas cores vibrantes, música ao vivo e rica cultura afro-brasileira.",
+    "imagem": "https://www.viajali.com.br/wp-content/uploads/2017/08/pelourinho-1.jpg"
+  },
+  {
+    "regiaoRelacionada": "Paraná",
+    "destino": "Cataratas do Iguaçu",
+    "mediaAvaliacao": "9.8",
+    "totalAvaliacao": "315",
+    "preco": "150,00",
+    "titulo": "Cataratas do Iguaçu",
+    "subtitulo": "Foz do Iguaçu, PR",
+    "descricao": "Uma das mais impressionantes quedas d’água do mundo, com trilhas e passeios que garantem uma experiência inesquecível.",
+    "imagem": "https://paraisotur.com.br/wp-content/uploads/2018/08/cataratas-do-iguacu.jpg"
+  },
+  {
+    "regiaoRelacionada": "Rio Grande do Sul",
+    "destino": "Gramado",
+    "mediaAvaliacao": "9.0",
+    "totalAvaliacao": "122",
+    "preco": "350,00",
+    "titulo": "Gramado",
+    "subtitulo": "Gramado, RS",
+    "descricao": "Um destino encantador com clima europeu, gastronomia irresistível e atrações incríveis, como o Lago Negro e a Rua Coberta.",
+    "imagem": "https://viajarresorts.com.br/wp-content/uploads/2020/01/gramado.jpg"
+  },
+  {
+    "regiaoRelacionada": "Amazonas",
+    "destino": "Encontro das Águas",
+    "mediaAvaliacao": "8.9",
+    "totalAvaliacao": "85",
+    "preco": "200,00",
+    "titulo": "Encontro das Águas",
+    "subtitulo": "Manaus, AM",
+    "descricao": "Um espetáculo natural onde as águas escuras do Rio Negro se encontram com as águas barrentas do Rio Solimões sem se misturar.",
+    "imagem": "https://www.viajali.com.br/wp-content/uploads/2019/01/encontro-das-aguas-manaus-1.jpg"
+  },
+  {
+    "regiaoRelacionada": "Ceará",
+    "destino": "Jericoacoara",
+    "mediaAvaliacao": "9.6",
+    "totalAvaliacao": "245",
+    "preco": "380,00",
+    "titulo": "Jericoacoara",
+    "subtitulo": "Jijoca de Jericoacoara, CE",
+    "descricao": "Praias paradisíacas, dunas impressionantes e um pôr do sol inesquecível fazem de Jericoacoara um dos destinos mais desejados do Brasil.",
+    "imagem": "https://vidasemparedes.com.br/wp-content/uploads/2020/10/buraco-azul-jericoacoara-1.jpg"
+  },
+  {
+    "regiaoRelacionada": "Pernambuco",
+    "destino": "Porto de Galinhas",
+    "mediaAvaliacao": "9.4",
+    "totalAvaliacao": "180",
+    "preco": "300,00",
+    "titulo": "Porto de Galinhas",
+    "subtitulo": "Ipojuca, PE",
+    "descricao": "Águas cristalinas, piscinas naturais e um clima tropical fazem deste destino um dos mais encantadores do Brasil.",
+    "imagem": "https://www.dicasdeviagem.com/wp-content/uploads/2017/08/porto-de-galinhas.jpg"
+  },
+  {
+    "regiaoRelacionada": "Minas Gerais",
+    "destino": "Ouro Preto",
+    "mediaAvaliacao": "8.8",
+    "totalAvaliacao": "120",
+    "preco": "372,00",
+    "titulo": "Ouro Preto",
+    "subtitulo": "Ouro Preto, MG",
+    "descricao": "Uma cidade histórica repleta de igrejas barrocas, ruas de pedra e uma rica história da época colonial brasileira.",
+    "imagem": "https://thesummerhunter.com/wp-content/uploads/2021/12/ouro-preto-o-que-fazer-na-cidade.jpg"
+  },
+  {
+    "regiaoRelacionada": "Maranhão",
+    "destino": "Lençóis Maranhenses",
+    "mediaAvaliacao": "9.7",
+    "totalAvaliacao": "205",
+    "preco": "320,00",
+    "titulo": "Lençóis Maranhenses",
+    "subtitulo": "Barreirinhas, MA",
+    "descricao": "Dunas brancas e lagoas de água cristalina formam uma paisagem surreal e única, perfeita para aventuras e relaxamento.",
+    "imagem": "https://www.melhoresdestinos.com.br/wp-content/uploads/2022/08/lencois-maranhenses-capa-02.jpg"
+  }
+]
