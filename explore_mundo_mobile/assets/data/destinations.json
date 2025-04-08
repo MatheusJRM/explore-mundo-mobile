@@ -1,0 +1,38 @@
+[
+  {
+    "nome": "Rio de Janeiro",
+    "imagem": "https://images.pexels.com/photos/351283/pexels-photo-351283.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "nome": "São Paulo",
+    "imagem": "https://images.pexels.com/photos/97906/pexels-photo-97906.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "nome": "Minas Gerais",
+    "imagem": "https://images.unsplash.com/photo-1632798121054-c6b73cc9e8b0?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    "nome": "Bahia",
+    "imagem": "https://images.pexels.com/photos/28975497/pexels-photo-28975497/free-photo-of-vista-panoramica-da-baia-de-salvador-com-barcos-e-predio-historico.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "nome": "Pernambuco",
+    "imagem": "https://images.pexels.com/photos/17299048/pexels-photo-17299048/free-photo-of-mar-praia-litoral-ferias.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "nome": "Maranhão",
+    "imagem": "https://images.pexels.com/photos/27688574/pexels-photo-27688574/free-photo-of-panorama-vista-paisagem-natureza.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "nome": "Amazonas",
+    "imagem": "https://images.unsplash.com/photo-1556751003-a249a53dc9b7?q=80&w=2056&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    "nome": "Rio Grande do Sul",
+    "imagem": "https://images.pexels.com/photos/1933645/pexels-photo-1933645.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "nome": "Paraná",
+    "imagem": "https://images.pexels.com/photos/31467663/pexels-photo-31467663/free-photo-of-ponte-cenica-e-moinho-de-vento-em-castro-brasil.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  }
+]
