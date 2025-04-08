@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../models/travel_package.dart';
+import '../models/travel_package.dart';
 
-class PackageDetailsScreen extends StatelessWidget {
+class PackageDetailsScreen extends StatefulWidget {
   final TravelPackage package;
+  final bool isBookmarked;
+  final Function(String) onBookmarkPressed;
+  final VoidCallback? onNavigateToReservations;
 
-  const PackageDetailsScreen({super.key, required this.package});
+  const PackageDetailsScreen({
+    super.key,
+    required this.package,
+    required this.isBookmarked,
+    required this.onBookmarkPressed,
+    this.onNavigateToReservations,
+  });
+
+  @override
+  State<PackageDetailsScreen> createState() => _PackageDetailsScreenState();
+}
+
+class _PackageDetailsScreenState extends State<PackageDetailsScreen> {
+  late bool _isBookmarked;
+  late TravelPackage _package;
+
+  @override
+  void initState() {
+    super.initState();
+    _package = widget.package;
+    _isBookmarked = widget.isBookmarked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +40,7 @@ class PackageDetailsScreen extends StatelessWidget {
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
               background: CachedNetworkImage(
-                imageUrl: package.imageURL,
+                imageUrl: _package.imageURL,
                 fit: BoxFit.cover,
                 placeholder:
                     (context, url) => Container(
@@ -31,6 +55,19 @@ class PackageDetailsScreen extends StatelessWidget {
               ),
             ),
             pinned: true,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(255, 255, 255, 0.7),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.share),
@@ -54,14 +91,14 @@ class PackageDetailsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              package.title,
+                              _package.title,
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              package.subtitle,
+                              _package.subtitle,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[600],
@@ -73,7 +110,7 @@ class PackageDetailsScreen extends StatelessWidget {
                       Row(
                         children: [
                           const Icon(Icons.star, color: Colors.amber),
-                          Text(' ${package.rating}'),
+                          Text(' ${_package.rating}'),
                         ],
                       ),
                     ],
@@ -112,7 +149,7 @@ class PackageDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    package.description,
+                    _package.description,
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.justify,
                   ),
@@ -123,16 +160,52 @@ class PackageDetailsScreen extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.purple,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       onPressed: () {
-                        // Implementar reserva
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              _isBookmarked
+                                  ? 'Reserva cancelada'
+                                  : 'Pacote reservado com sucesso!',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            action: SnackBarAction(
+                              label: 'Ver Reservas',
+                              textColor: Colors.white,
+                              onPressed: () {
+                                Navigator.popUntil(
+                                  context,
+                                  (route) => route.settings.name == '/home',
+                                );
+                                WidgetsBinding.instance.addPostFrameCallback((
+                                  _,
+                                ) {
+                                  widget.onNavigateToReservations?.call();
+                                });
+                              },
+                            ),
+                          ),
+                        );
+
+                        setState(() {
+                          _isBookmarked = !_isBookmarked;
+                        });
+
+                        widget.onBookmarkPressed(_package.destination);
                       },
                       child: Text(
-                        'Reservar por ${package.price}',
-                        style: const TextStyle(fontSize: 18),
+                        !_isBookmarked
+                            ? 'Reservar por ${_package.price}'
+                            : 'Cancelar reserva',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -144,17 +217,17 @@ class PackageDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return Column(
-      children: [
-        IconButton(icon: Icon(icon, size: 32), onPressed: onPressed),
-        Text(label),
-      ],
-    );
-  }
+Widget _buildActionButton({
+  required IconData icon,
+  required String label,
+  required VoidCallback onPressed,
+}) {
+  return Column(
+    children: [
+      IconButton(icon: Icon(icon, size: 32), onPressed: onPressed),
+      Text(label),
+    ],
+  );
 }

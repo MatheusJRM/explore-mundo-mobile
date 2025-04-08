@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../models/travel_package.dart';
+import '../models/travel_package.dart';
 
 class TravelPackageCard extends StatelessWidget {
   final TravelPackage package;
@@ -20,9 +20,7 @@ class TravelPackageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -41,14 +39,18 @@ class TravelPackageCard extends StatelessWidget {
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[300],
-                      child: const Center(child: CircularProgressIndicator()),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.error),
-                    ),
+                    placeholder:
+                        (context, url) => Container(
+                          color: Colors.grey[300],
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                    errorWidget:
+                        (context, url, error) => Container(
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.error),
+                        ),
                   ),
                 ),
                 Positioned(
@@ -60,7 +62,9 @@ class TravelPackageCard extends StatelessWidget {
                       color: isBookmarked ? Colors.amber : Colors.white,
                       size: 28,
                     ),
-                    onPressed: onBookmarkPressed,
+                    onPressed: () {
+                      onBookmarkPressed();
+                    },
                   ),
                 ),
               ],
@@ -83,10 +87,7 @@ class TravelPackageCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     package.subtitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -107,9 +108,10 @@ class TravelPackageCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: package.price == 'Gratuito'
-                              ? Colors.green
-                              : Theme.of(context).primaryColor,
+                          color:
+                              package.price == 'Gratuito'
+                                  ? Colors.green
+                                  : Theme.of(context).primaryColor,
                         ),
                       ),
                     ],

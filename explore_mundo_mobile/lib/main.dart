@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/src/pages/home/home_page.dart';
 import 'package:my_app/src/pages/landing/lading_page.dart';
 
 void main() {
@@ -13,7 +14,11 @@ class ExploreMundoMobile extends StatelessWidget {
     return MaterialApp(
       title: 'Explore Mundo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const LandingPage(),
+      initialRoute: "/",
+      routes: {
+        '/': (context) => LandingPage(),
+        "/home": (context) => HomePage(),
+      },
     );
   }
 }

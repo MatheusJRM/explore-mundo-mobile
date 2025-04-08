@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:my_app/src/models/destinations.dart';
 import 'package:my_app/src/models/travel_package.dart';
+import 'package:my_app/src/repositories/destinations_repository.dart';
 import 'package:my_app/src/repositories/travel_package_repository.dart';
-import 'widgets/travel_package_card.dart';
-import 'widgets/package_details_screen.dart';
+import 'package:my_app/src/widgets/destination_card.dart';
+import 'package:my_app/src/widgets/region_destinations_screen.dart';
+import '../../widgets/travel_package_card.dart';
+import '../../widgets/package_details_screen.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final int? initialTab;
+  const HomePage({super.key, this.initialTab});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,15 +19,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TravelPackageRepository _repository = TravelPackageRepository();
+  final DestinationRepository _destinationRepository = DestinationRepository();
   late Future<List<TravelPackage>> _packagesFuture;
   final Set<String> _bookmarkedPackages = {};
   String _searchQuery = '';
-  int _currentTabIndex = 1; // Começa na aba "Pacotes"
+  late int _currentTabIndex;
 
   @override
   void initState() {
     super.initState();
+    _currentTabIndex = widget.initialTab ?? 1;
     _packagesFuture = _repository.getPackages();
+  }
+
+  void navigateToReservations() {
+    setState(() {
+      _currentTabIndex = 2;
+    });
   }
 
   @override
@@ -37,10 +50,52 @@ class _HomePageState extends State<HomePage> {
               showSearch(
                 context: context,
                 delegate: TravelPackageSearch(
-                  _packagesFuture,
-                  _bookmarkedPackages,
+                  packagesFuture: _packagesFuture,
+                  bookmarkedPackages: _bookmarkedPackages,
+                  onBookmarkPressed: (destination) {
+                    setState(() {
+                      if (_bookmarkedPackages.contains(destination)) {
+                        _bookmarkedPackages.remove(destination);
+                      } else {
+                        _bookmarkedPackages.add(destination);
+                      }
+                    });
+                  },
                 ),
               );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: const Text('Confirmar Logout'),
+                      content: const Text(
+                        'Tem certeza que deseja sair? Todos os dados serão perdidos.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Cancelar'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text(
+                            'Sair',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+              );
+
+              if (shouldLogout == true) {
+                if (!mounted) return;
+                Navigator.of(context).pushReplacementNamed('/');
+              }
             },
           ),
         ],
@@ -104,112 +159,85 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDestinationsTab(List<TravelPackage> packages) {
-    // Agrupa pacotes por região
-    final regions = <String, List<TravelPackage>>{};
-    for (var package in packages) {
-      regions.putIfAbsent(package.relatedRegion, () => []);
-      regions[package.relatedRegion]!.add(package);
-    }
-
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        const Text(
-          'Explore por Região',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        ...regions.entries.map((entry) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                entry.key,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 180,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: entry.value.length,
-                  separatorBuilder:
-                      (context, index) => const SizedBox(width: 12),
-                  itemBuilder: (context, index) {
-                    final package = entry.value[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) =>
-                                    PackageDetailsScreen(package: package),
-                          ),
-                        );
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Stack(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: package.imageURL,
-                              width: 280,
-                              fit: BoxFit.cover,
-                              placeholder:
-                                  (context, url) => Container(
-                                    color: Colors.grey[300],
-                                    child: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ),
-                              errorWidget:
-                                  (context, url, error) => Container(
-                                    color: Colors.grey[300],
-                                    child: const Icon(Icons.error),
-                                  ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                    colors: [
-                                      Colors.black.withOpacity(0.8),
-                                      Colors.transparent,
-                                    ],
-                                  ),
-                                ),
-                                child: Text(
-                                  package.title,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 24),
-            ],
+    return FutureBuilder<List<Destination>>(
+      future: _destinationRepository.getDestinations(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Erro ao carregar destinos: ${snapshot.error}'),
           );
-        }),
-      ],
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('Nenhum destino encontrado'));
+        }
+
+        final destinations = snapshot.data!;
+
+        return Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Explore por Destino',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.8,
+                ),
+                itemCount: destinations.length,
+                itemBuilder: (context, index) {
+                  final destination = destinations[index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Filtra os pacotes pela região relacionada
+                      final regionPackages =
+                          packages
+                              .where((p) => p.relatedRegion == destination.name)
+                              .toList();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => RegionDestinationScreen(
+                                regionName: destination.name,
+                                packages: regionPackages,
+                                bookmarkedPackages: _bookmarkedPackages,
+                                onBookmarkPressed: (destination) {
+                                  setState(() {
+                                    if (_bookmarkedPackages.contains(
+                                      destination,
+                                    )) {
+                                      _bookmarkedPackages.remove(destination);
+                                    } else {
+                                      _bookmarkedPackages.add(destination);
+                                    }
+                                  });
+                                },
+                              ),
+                        ),
+                      ).then((_) {
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      });
+                    },
+                    child: DestinationCard(destination: destination),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -230,7 +258,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(16),
           child: TextField(
             decoration: InputDecoration(
-              hintText: 'Pesquisar destinos...',
+              hintText: 'Pesquisar destinos, locais...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -265,8 +293,25 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                               builder:
-                                  (context) =>
-                                      PackageDetailsScreen(package: package),
+                                  (context) => PackageDetailsScreen(
+                                    package: package,
+                                    isBookmarked: isBookmarked,
+                                    onBookmarkPressed: (destination) {
+                                      setState(() {
+                                        if (_bookmarkedPackages.contains(
+                                          destination,
+                                        )) {
+                                          _bookmarkedPackages.remove(
+                                            destination,
+                                          );
+                                        } else {
+                                          _bookmarkedPackages.add(destination);
+                                        }
+                                      });
+                                    },
+                                    onNavigateToReservations:
+                                        navigateToReservations,
+                                  ),
                             ),
                           );
                         },
@@ -317,15 +362,31 @@ class _HomePageState extends State<HomePage> {
           itemCount: bookmarkedPackages.length,
           itemBuilder: (context, index) {
             final package = bookmarkedPackages[index];
+            final isBookmarked = _bookmarkedPackages.contains(
+              package.destination,
+            );
             return TravelPackageCard(
               package: package,
-              isBookmarked: true,
+              isBookmarked: isBookmarked,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder:
-                        (context) => PackageDetailsScreen(package: package),
+                        (context) => PackageDetailsScreen(
+                          package: package,
+                          isBookmarked: isBookmarked,
+                          onBookmarkPressed: (destination) {
+                            setState(() {
+                              if (_bookmarkedPackages.contains(destination)) {
+                                _bookmarkedPackages.remove(destination);
+                              } else {
+                                _bookmarkedPackages.add(destination);
+                              }
+                            });
+                          },
+                          onNavigateToReservations: navigateToReservations,
+                        ),
                   ),
                 );
               },
@@ -448,8 +509,13 @@ class _AboutItem extends StatelessWidget {
 class TravelPackageSearch extends SearchDelegate<String> {
   final Future<List<TravelPackage>> packagesFuture;
   final Set<String> bookmarkedPackages;
+  final Function(String) onBookmarkPressed;
 
-  TravelPackageSearch(this.packagesFuture, this.bookmarkedPackages);
+  TravelPackageSearch({
+    required this.packagesFuture,
+    required this.bookmarkedPackages,
+    required this.onBookmarkPressed,
+  });
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -508,16 +574,34 @@ class TravelPackageSearch extends SearchDelegate<String> {
               ),
               title: Text(package.title),
               subtitle: Text(package.subtitle),
-              trailing: Icon(
-                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                color: isBookmarked ? Colors.amber : Colors.grey,
+              trailing: StatefulBuilder(
+                builder: (context, setState) {
+                  final isBookmarked = bookmarkedPackages.contains(
+                    package.destination,
+                  );
+
+                  return IconButton(
+                    icon: Icon(
+                      isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                      color: isBookmarked ? Colors.amber : Colors.grey,
+                    ),
+                    onPressed: () {
+                      onBookmarkPressed(package.destination);
+                      setState(() {}); // Força a reconstrução deste widget
+                    },
+                  );
+                },
               ),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder:
-                        (context) => PackageDetailsScreen(package: package),
+                        (context) => PackageDetailsScreen(
+                          package: package,
+                          isBookmarked: isBookmarked,
+                          onBookmarkPressed: onBookmarkPressed,
+                        ),
                   ),
                 );
               },
