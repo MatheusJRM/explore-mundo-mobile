@@ -25,7 +25,7 @@ Aplicativo Flutter para explorar pacotes de viagens, com funcionalidades de pesq
 | Cached Network Image  | Cache de imagens remotas            |
 
 ## Estrutura do Projeto
-
+```
 lib/
 ├── src/
       ├── models/ # Modelos de dados
@@ -45,3 +45,4 @@ lib/
 |           ├── region_destination_screen.dart
 |           └── travel_package_card.dart
 └── main.dart # Ponto de entrada
+```
